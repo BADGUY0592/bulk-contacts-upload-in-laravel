@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contact;
 use App\User;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -21,8 +22,18 @@ class HomeController extends Controller
                 ->orderBy('id','DESC')
                 ->withCount('contacts as contactscount')
                 ->paginate(15);
+            Carbon::setWeekStartsAt(Carbon::SUNDAY);
+            $daycount=Contact::whereDate('created_at', Carbon::today())
+                ->count();
+            $weekcount=Contact::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->count();
+            $monthcount=Contact::whereDate('created_at', '>=', Carbon::today()->startOfMonth())
+                ->count();
             return view('home')
-                ->with('users',$users);
+                ->with('users',$users)
+                ->with('daycount',$daycount)
+                ->with('weekcount',$weekcount)
+                ->with('monthcount',$monthcount);
         }else{
             $contacts=Contact::where('user_id',Auth::User()->id)
                 ->orderBy('id','DESC')

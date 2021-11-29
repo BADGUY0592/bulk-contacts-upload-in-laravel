@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ContactsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Contact;
 use Auth;
 use Illuminate\Http\Request;
@@ -15,6 +17,15 @@ class ContactsController extends Controller
             $this->validate($request,[
                 'bulkupload' => 'mimes:xlsx'
             ]);
+            if(Auth::User()->isAdmin == 1){
+                $this->validate($request,[
+                    'user' => 'required'
+                ]);
+                $user=$request->user;
+            }else{
+                $user=Auth::User()->id;
+            }
+            Excel::import(new ContactsImport($user), $request->file('bulkupload')->getRealPath());
         }else{
             $this->validate($request,[
                 'name' => 'required|string|max:255',

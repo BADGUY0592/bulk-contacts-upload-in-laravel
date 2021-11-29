@@ -27,6 +27,17 @@
                     @endif
                     @if(Auth::User()->isAdmin == 1)
                         <div class="row">
+                            <div class="col-md-4">
+                                <h6>Contacts added today: {{ $daycount }}</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>Contacts added this week: {{ $weekcount }}</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>Contacts added this month: {{ $monthcount }}</h6>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-header">
