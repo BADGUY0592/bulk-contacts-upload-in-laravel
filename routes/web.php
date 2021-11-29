@@ -33,10 +33,22 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth'],function(){
 
     Route::group(['middleware' => 'client'],function(){
+        
+        //Contact Routes
+        Route::post('/home/client/contact/store','ContactsController@store');
+        Route::get('/api/contact/{cid}/get-details','ContactsController@getdetails');
+        Route::post('/home/client/contact/update','ContactsController@update');
+        Route::get('/home/client/contact/{cid}/delete','ContactsController@delete');
     });
 
     Route::group(['middleware' => 'admin'],function(){
+
+        //User Routes
         Route::post('/home/user/store','HomeController@createuser');
+        Route::get('/home/client/{uid}/show','ClientsController@show');
+        Route::get('/home/client/update','ClientsController@update');
+        Route::get('/home/client/{uid}/delete','ClientsController@delete');
+        
     });
    
 }); 

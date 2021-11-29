@@ -10,7 +10,7 @@ class IsClient
 {
      public function handle(Request $request, Closure $next)
     {
-        if(Auth::User()->isSubscriber ==1){
+        if(Auth::User()->isUser ==1){
             return $next($request);
         } 
         else{

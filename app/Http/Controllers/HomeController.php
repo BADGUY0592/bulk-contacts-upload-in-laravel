@@ -19,6 +19,7 @@ class HomeController extends Controller
         if(Auth::User()->isAdmin == 1){
             $users=User::where('isAdmin',0)
                 ->orderBy('id','DESC')
+                ->withCount('contacts as contactscount')
                 ->paginate(15);
             return view('home')
                 ->with('users',$users);
